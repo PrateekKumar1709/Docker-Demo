@@ -5,9 +5,22 @@ app = Flask(__name__)
 
 @app.route('/')
 def cat_gif():
+    """
+    Serve a random cat GIF from the Cataas API.
+
+    This function makes a GET request to the Cataas API to fetch a random cat GIF URL.
+    The GIF URL is then embedded in an HTML page, which is rendered and returned to the user.
+
+    Returns:
+        str: HTML string containing the embedded GIF.
+
+    API:
+        - The Cataas (Cat as a Service) API is used to retrieve a random cat GIF.
+    """
+    
     # Fetch a random cat GIF from the Cataas API
     response = requests.get('https://cataas.com/cat/gif')
-    gif_url = response.url
+    gif_url = response.url  # Get the URL of the fetched GIF
 
     # HTML template with embedded GIF
     html = '''
@@ -33,7 +46,19 @@ def cat_gif():
     </body>
     </html>
     '''
+    
+    # Render the HTML template with the fetched GIF URL
     return render_template_string(html, gif_url=gif_url)
 
 if __name__ == '__main__':
+    """
+    Main entry point of the application.
+
+    This runs the Flask web server, which listens on all available network interfaces
+    (host='0.0.0.0') on port 5000. It allows external requests to access the cat GIF service.
+    
+    Example:
+        You can access the service by visiting http://localhost:5000 in your browser
+        if running locally, or the appropriate IP/port if running in a container.
+    """
     app.run(host='0.0.0.0', port=5000)
